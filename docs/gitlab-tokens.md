@@ -3,7 +3,7 @@
 Complete guide for creating, storing, and managing GitLab access tokens used in GitHub Actions workflows.
 
 > **📝 Need to generate a new SSH key pair?**  
-> View the detailed guide here: [SSH Key Generation Documentation](https://github.com/CraigWoodcock/SSH-to-GitHub/tree/main/SSH%20to%20Github)
+> View the detailed guide here: [SSH Key Generation Documentation](./ssh-setup.md)
 
 ---
 
