@@ -44,19 +44,6 @@ After creating your repository, you'll see a setup page with quick setup instruc
    git@github.com:username/repository-name.git
    ```
 
-**Visual Guide:**
-
-```
-┌─────────────────────────────────────┐
-│ Quick setup — if you've done this   │
-│                                     │
-│ HTTPS  [SSH] ← Click this           │
-│ ┌─────────────────────────────────┐ │
-│ │ git@github.com:user/repo.git   │ │ ← Copy this URL
-│ └─────────────────────────────────┘ │
-└─────────────────────────────────────┘
-```
-
 ---
 
 ## Step 3: Initialize Git Locally
@@ -133,7 +120,7 @@ If you see:
 Permission denied (publickey)
 ```
 
-**Solution:** Your SSH key isn't properly configured. Follow the [SSH setup guide](https://github.com/CraigWoodcock/SSH-to-GitHub/tree/main/SSH%20to%20Github).
+**Solution:** Your SSH key isn't properly configured. Follow the [SSH setup guide](./ssh-setup.md).
 
 ### Remote Already Exists
 
@@ -195,6 +182,6 @@ git pull
 
 - [Official Git Documentation](https://git-scm.com/doc)
 - [GitHub Documentation](https://docs.github.com)
-- [SSH to GitHub Setup](https://github.com/CraigWoodcock/SSH-to-GitHub/tree/main/SSH%20to%20Github)
+- [SSH to GitHub Setup](./ssh-setup.md)
 
 ---
