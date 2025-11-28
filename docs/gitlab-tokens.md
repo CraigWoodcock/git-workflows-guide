@@ -241,7 +241,7 @@ If you see URLs like `git@gitlab.com:username/repo.git`, you're using SSH.
 
 ### Step 1: Generate a New SSH Key Pair
 
-Follow the detailed instructions in the [SSH Key Generation Documentation](https://github.com/CraigWoodcock/SSH-to-GitHub/tree/main/SSH%20to%20Github) to create a new SSH key pair.
+Follow the detailed instructions in the [SSH Key Generation Documentation](./ssh-setup.md) to create a new SSH key pair.
 
 After generating your new key pair, you'll have:
 - **Private key**: `~/.ssh/id_ed25519` (or similar)
