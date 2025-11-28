@@ -6,7 +6,7 @@ A complete guide to creating a GitHub repository, initializing Git locally, and 
 
 This guide assumes you have already set up SSH authentication with GitHub. If you haven't, please follow this guide first:
 
-👉 [SSH to GitHub Setup Guide](docs/ssh-setup.md)
+👉 [SSH to GitHub Setup Guide](./ssh-setup.md)
 
 ## Table of Contents
 
