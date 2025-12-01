@@ -1,622 +1,369 @@
-# Command Reference Guide
+# Linux, Bash & Git Commands Reference
 
-A comprehensive reference of essential Git, Linux, and Bash commands for daily development work.
-
----
-
-## Git Commands
-
-### Repository Setup
-
-```bash
-# Initialize a new Git repository
-git init
-
-# Clone an existing repository
-git clone <repository-url>
-git clone git@github.com:username/repo.git
-
-# Clone a specific branch
-git clone -b <branch-name> <repository-url>
-```
-
-### Configuration
-
-```bash
-# Set your identity
-git config --global user.name "Your Name"
-git config --global user.email "your.email@example.com"
-
-# View all configuration
-git config --list
-
-# Set default branch name
-git config --global init.defaultBranch main
-
-# Configure line endings (Windows)
-git config --global core.autocrlf true
-
-# Configure line endings (Mac/Linux)
-git config --global core.autocrlf input
-```
-
-### Basic Workflow
-
-```bash
-# Check repository status
-git status
-
-# Add files to staging area
-git add <file>
-git add .                    # Add all files
-git add *.js                 # Add all JS files
-git add -p                   # Interactive staging
-
-# Commit changes
-git commit -m "Commit message"
-git commit -am "Message"     # Add and commit tracked files
-git commit --amend           # Modify last commit
-
-# View commit history
-git log
-git log --oneline            # Compact view
-git log --graph              # Visual branch graph
-git log -n 5                 # Last 5 commits
-git log --author="Name"      # Filter by author
-```
-
-### Branching
-
-```bash
-# List branches
-git branch                   # Local branches
-git branch -r                # Remote branches
-git branch -a                # All branches
-
-# Create a new branch
-git branch <branch-name>
-
-# Switch to a branch
-git checkout <branch-name>
-git switch <branch-name>     # Modern alternative
-
-# Create and switch to new branch
-git checkout -b <branch-name>
-git switch -c <branch-name>
-
-# Delete a branch
-git branch -d <branch-name>  # Safe delete
-git branch -D <branch-name>  # Force delete
-
-# Rename current branch
-git branch -m <new-name>
-```
-
-### Merging
-
-```bash
-# Merge branch into current branch
-git merge <branch-name>
-
-# Abort a merge
-git merge --abort
-
-# Continue after resolving conflicts
-git merge --continue
-```
-
-### Remote Repositories
-
-```bash
-# View remote repositories
-git remote -v
-
-# Add a remote repository
-git remote add origin <repository-url>
-
-# Change remote URL
-git remote set-url origin <new-url>
-
-# Remove a remote
-git remote remove <remote-name>
-
-# Fetch changes from remote
-git fetch
-git fetch origin
-
-# Pull changes (fetch + merge)
-git pull
-git pull origin main
-
-# Push changes to remote
-git push
-git push origin main
-git push -u origin main      # Set upstream and push
-git push --all               # Push all branches
-git push --tags              # Push all tags
-
-# Push a new branch
-git push -u origin <branch-name>
-```
-
-### Undoing Changes
-
-```bash
-# Discard changes in working directory
-git checkout -- <file>
-git restore <file>           # Modern alternative
-
-# Unstage files
-git reset HEAD <file>
-git restore --staged <file>
-
-# Undo last commit (keep changes)
-git reset --soft HEAD~1
-
-# Undo last commit (discard changes)
-git reset --hard HEAD~1
-
-# Revert a commit (creates new commit)
-git revert <commit-hash>
-
-# Clean untracked files
-git clean -n                 # Dry run
-git clean -f                 # Remove files
-git clean -fd                # Remove files and directories
-```
-
-### Stashing
-
-```bash
-# Save changes temporarily
-git stash
-git stash save "Description"
-
-# List stashes
-git stash list
-
-# Apply most recent stash
-git stash apply
-git stash pop                # Apply and remove
-
-# Apply specific stash
-git stash apply stash@{2}
-
-# Delete stash
-git stash drop stash@{0}
-git stash clear              # Delete all stashes
-```
-
-### Tagging
-
-```bash
-# List tags
-git tag
-
-# Create a tag
-git tag v1.0.0
-git tag -a v1.0.0 -m "Version 1.0.0"
-
-# Push tags to remote
-git push origin v1.0.0
-git push --tags
-
-# Delete a tag
-git tag -d v1.0.0                    # Local
-git push origin --delete v1.0.0     # Remote
-```
-
-### Viewing Changes
-
-```bash
-# Show changes in working directory
-git diff
-
-# Show staged changes
-git diff --staged
-git diff --cached
-
-# Show changes between branches
-git diff branch1..branch2
-
-# Show changes in a commit
-git show <commit-hash>
-```
+## Table of Contents
+- [Directory Navigation](#directory-navigation)
+- [File Management](#file-management)
+- [File Viewing & Editing](#file-viewing--editing)
+- [System Information](#system-information)
+- [Package Management](#package-management)
+- [Process Management](#process-management)
+- [Bash Scripting Basics](#bash-scripting-basics)
+- [Git Commands](#git-commands)
+- [Important Safety Notes](#important-safety-notes)
 
 ---
 
-## Linux/Bash Commands
+## Directory Navigation
 
-### Navigation
+### Special Directory Symbols
+- `/` - Root directory (top-level directory)
+- `~` - Home directory of current user
+- `.` - Current directory
+- `..` - Parent directory (one level up)
+- `-` - Previous directory
 
-```bash
-# Print working directory
-pwd
+### Navigation Commands
+- `cd` - Change directory
+  - `cd /` - Go to root directory
+  - `cd ~` or `cd` - Go to home directory
+  - `cd ..` - Go up one level
+  - `cd ../..` - Go up two levels
+  - `cd -` - Go to previous directory
+- `pwd` - Print working directory (show current location)
 
-# List files
-ls
-ls -l                        # Long format
-ls -la                       # Include hidden files
-ls -lh                       # Human readable sizes
-ls -ltr                      # Sort by time, reverse
+---
 
-# Change directory
-cd /path/to/directory
-cd ..                        # Parent directory
-cd ~                         # Home directory
-cd -                         # Previous directory
-```
+## File Management
 
-### File Operations
+### Creating Files & Directories
+- `touch <filename>` - Create a new empty file
+- `mkdir <directory>` - Create a new directory
+  - `mkdir -p path/to/directory` - Create nested directories
+  - `mkdir "directory name"` - Create directory with spaces in name
 
-```bash
-# Create file
-touch filename.txt
+### Listing Files
+- `ls` - List files in current directory
+  - `ls -a` - List all files including hidden
+  - `ls -l` - List in long format with details
+  - `ls -al` or `ls -la` - List all in long format
+  - `ls -lh` - List with human-readable file sizes
+  - `ls -lt` - List sorted by modification time
+  - `ls -ltr` - List sorted by time (reverse, oldest first)
 
-# Create directory
-mkdir directory-name
-mkdir -p path/to/nested/dir  # Create parent directories
+### Copying, Moving & Deleting
+- `cp <source> <destination>` - Copy file
+  - `cp -r <source> <destination>` - Copy directory recursively
+- `mv <source> <destination>` - Move file or directory
+  - `mv <oldname> <newname>` - Rename file or directory
+- `rm <filename>` - Delete file
+  - `rm -r <directory>` - Delete directory and contents recursively ⚠️
+  - `rm -rf <directory>` - Force delete without confirmation ⚠️
+- `rmdir <directory>` - Delete empty directory
 
-# Copy files/directories
-cp file1.txt file2.txt
-cp -r dir1 dir2              # Copy directory recursively
+### File Permissions
+- `chmod <permissions> <file>` - Change file permissions
+  - `chmod +x <file>` - Make file executable
+  - `chmod 755 <file>` - Set specific permissions (rwxr-xr-x)
+  - `chmod -R 755 <directory>` - Change permissions recursively
+- `chown <user>:<group> <file>` - Change file owner
 
-# Move/rename files
-mv oldname.txt newname.txt
-mv file.txt /path/to/destination/
+---
 
-# Remove files/directories
-rm file.txt
-rm -r directory              # Remove directory
-rm -rf directory             # Force remove (be careful!)
+## File Viewing & Editing
 
-# View file contents
-cat file.txt                 # Entire file
-less file.txt                # Paginated view
-head file.txt                # First 10 lines
-tail file.txt                # Last 10 lines
-tail -f file.txt             # Follow file (logs)
-```
+### Viewing File Contents
+- `cat <filename>` - Display entire file contents
+- `nl <filename>` - Display file with line numbers
+- `head <filename>` - Show first 10 lines
+  - `head -n <number> <filename>` - Show first n lines
+- `tail <filename>` - Show last 10 lines
+  - `tail -n <number> <filename>` - Show last n lines
+  - `tail -f <filename>` - Follow file updates in real-time
+- `less <filename>` - View file with scrolling (press `q` to quit)
+- `more <filename>` - View file page by page
 
-### File Searching
+### Editing Files
+- `nano <filename>` - Edit file in nano editor
+  - `Ctrl+S` - Save
+  - `Ctrl+X` - Exit
+  - `Ctrl+K` - Cut line
+  - `Ctrl+U` - Paste
+- `vi <filename>` or `vim <filename>` - Edit in vi/vim editor
+  - `i` - Enter insert mode
+  - `Esc` - Exit insert mode
+  - `:w` - Save
+  - `:q` - Quit
+  - `:wq` - Save and quit
+  - `:q!` - Quit without saving
 
-```bash
-# Find files by name
-find . -name "*.txt"
-find /path -type f -name "pattern"
+### Searching & Filtering
+- `grep <pattern> <filename>` - Search for pattern in file
+  - `grep -i <pattern> <filename>` - Case-insensitive search
+  - `grep -r <pattern> <directory>` - Recursive search in directory
+  - `grep -n <pattern> <filename>` - Show line numbers
+- `cat <filename> | grep <pattern>` - Pipe file contents to grep
+- `find <directory> -name <filename>` - Find files by name
+  - `find . -type f -name "*.txt"` - Find all .txt files
+  - `find . -type d -name <dirname>` - Find directories
 
-# Search file contents
-grep "search-term" file.txt
-grep -r "term" directory/    # Recursive search
-grep -i "term" file.txt      # Case insensitive
-grep -n "term" file.txt      # Show line numbers
-```
+---
 
-### Permissions
+## System Information
 
-```bash
-# Change file permissions
-chmod 755 script.sh
-chmod +x script.sh           # Make executable
-chmod -x script.sh           # Remove executable
+### Basic System Commands
+- `uname` - Show operating system name
+  - `uname -a` - Show all system information
+  - `uname -r` - Show kernel version
+  - `uname --help` - Show help for uname command
+- `whoami` - Show current username
+- `hostname` - Show system hostname
+- `date` - Show current date and time
+- `uptime` - Show system uptime
+- `df -h` - Show disk space usage (human-readable)
+- `du -sh <directory>` - Show directory size
+- `free -h` - Show memory usage
 
-# Change file owner
-chown user:group file.txt
-chown -R user:group directory/
+### Command History & Help
+- `history` - Show command history
+  - `!<number>` - Execute command from history by number
+  - `!!` - Execute last command
+  - `!<command>` - Execute most recent command starting with <command>
+- `man <command>` - Show manual page for command
+- `<command> --help` - Show help for most commands
+- `clear` or `Ctrl+L` - Clear terminal screen
 
-# View permissions
-ls -l
-```
+---
 
-### System Information
+## Package Management
 
-```bash
-# Display current user
-whoami
+### APT (Debian/Ubuntu)
+- `sudo apt update` - Update package lists
+  - `sudo apt update -y` - Update without confirmation
+- `sudo apt upgrade` - Upgrade installed packages ⚠️
+  - `sudo apt upgrade -y` - Upgrade without confirmation ⚠️
+- `sudo apt install <package>` - Install package
+  - `sudo apt install -y <package>` - Install without confirmation
+- `sudo apt remove <package>` - Remove package
+- `sudo apt autoremove` - Remove unused dependencies
+- `sudo apt search <package>` - Search for package
 
-# Display system info
-uname -a
+### Other Commands
+- `curl <url>` - Download file from URL
+  - `curl -O <url>` - Download and save with original filename
+- `wget <url>` - Download file from URL
 
-# Display disk usage
-df -h
+---
 
-# Display directory size
-du -sh directory/
-du -h --max-depth=1
+## Process Management
 
-# Display running processes
-ps aux
-top
-htop                         # Interactive (if installed)
+### Viewing Processes
+- `ps` - Show current processes
+  - `ps aux` - Show all processes with detailed info
+  - `ps -ef` - Show all processes in full format
+- `top` - Show processes by CPU usage (interactive)
+  - `q` - Quit top
+- `htop` - Enhanced process viewer (if installed)
+- `jobs` - Show background jobs in current shell
 
-# Display memory usage
-free -h
-```
+### Managing System Services
+- `sudo systemctl status <service>` - Check service status
+  - `Ctrl+C` or `q` - Exit status view
+- `sudo systemctl start <service>` - Start service
+- `sudo systemctl stop <service>` - Stop service
+- `sudo systemctl restart <service>` - Restart service
+- `sudo systemctl enable <service>` - Enable service at startup
+- `sudo systemctl disable <service>` - Disable service at startup
 
-### Text Processing
-
-```bash
-# Count lines, words, characters
-wc file.txt
-wc -l file.txt               # Lines only
-
-# Sort lines
-sort file.txt
-sort -r file.txt             # Reverse order
-sort -n file.txt             # Numeric sort
-
-# Remove duplicates
-sort file.txt | uniq
-
-# Stream editor
-sed 's/old/new/g' file.txt   # Replace text
-sed -i 's/old/new/g' file.txt  # Edit in place
-
-# Advanced text processing
-awk '{print $1}' file.txt    # Print first column
-```
-
-### Compression
-
-```bash
-# Create tar archive
-tar -czf archive.tar.gz directory/
-
-# Extract tar archive
-tar -xzf archive.tar.gz
-
-# Create zip archive
-zip -r archive.zip directory/
-
-# Extract zip archive
-unzip archive.zip
-```
-
-### Network Commands
-
-```bash
-# Download files
-wget https://example.com/file.zip
-curl -O https://example.com/file.zip
-
-# Check network connectivity
-ping google.com
-ping -c 4 google.com         # Send 4 packets
-
-# Display network connections
-netstat -tuln
-ss -tuln                     # Modern alternative
-
-# DNS lookup
-nslookup example.com
-dig example.com
-```
-
-### Process Management
-
-```bash
-# Run command in background
-command &
-
-# List background jobs
-jobs
-
-# Bring job to foreground
-fg
-fg %1
-
-# Kill process
-kill PID
-kill -9 PID                  # Force kill
-killall process-name
-
-# Find process ID
-pidof process-name
-pgrep process-name
-```
-
-### SSH Commands
-
-```bash
-# Connect to remote server
-ssh user@hostname
-ssh -p 2222 user@hostname    # Custom port
-
-# Copy files to remote (SCP)
-scp file.txt user@host:/path/
-scp -r directory/ user@host:/path/
-
-# Copy files to remote (RSYNC)
-rsync -avz file.txt user@host:/path/
-rsync -avz --delete dir/ user@host:/path/
-
-# Generate SSH key
-ssh-keygen -t ed25519 -C "your.email@example.com"
-ssh-keygen -t rsa -b 4096 -C "your.email@example.com"
-
-# Copy SSH key to server
-ssh-copy-id user@hostname
-
-# Start SSH agent
-eval "$(ssh-agent -s)"
-
-# Add SSH key to agent
-ssh-add ~/.ssh/id_ed25519
-```
+### Process Control
+- `<command> &` - Run command in background
+- `Ctrl+C` - Stop current process
+- `Ctrl+Z` - Suspend current process
+- `bg` - Resume suspended process in background
+- `fg` - Bring background process to foreground
+- `kill <PID>` - Terminate process by PID ⚠️
+- `kill -9 <PID>` - Force kill process ⚠️
+- `killall <process_name>` - Kill all processes by name
+- `sleep <seconds>` - Pause for specified seconds
 
 ---
 
 ## Bash Scripting Basics
 
+### Script Execution
+- `./<script.sh>` - Execute script in current directory
+- `bash <script.sh>` - Execute script with bash
+- `source <script.sh>` or `. <script.sh>` - Execute script in current shell
+
 ### Variables
-
 ```bash
-# Define variable
-NAME="John"
-AGE=25
+# Assign variable
+MY_VAR="value"
 
-# Use variable
-echo $NAME
-echo "Hello, $NAME"
-echo "Hello, ${NAME}"        # Preferred syntax
+# Access variable
+echo $MY_VAR
+echo ${MY_VAR}
+
+# Environment variables
+export MY_VAR="value"
+env                    # List all environment variables
+echo $PATH             # Show PATH variable
 ```
 
-### Conditionals
-
+### Common Bash Operators
 ```bash
-# If statement
-if [ condition ]; then
-    echo "True"
-fi
+# Shebang (first line of script)
+#!/bin/bash
 
-# If-else
-if [ condition ]; then
-    echo "True"
-else
-    echo "False"
-fi
+# Comments
+# This is a comment
 
-# File checks
-if [ -f "file.txt" ]; then
-    echo "File exists"
-fi
+# Input/Output redirection
+command > file         # Redirect output to file (overwrite)
+command >> file        # Redirect output to file (append)
+command < file         # Read input from file
+command 2> file        # Redirect error output to file
 
-if [ -d "directory" ]; then
-    echo "Directory exists"
-fi
+# Piping
+command1 | command2    # Pipe output of command1 to command2
+
+# Conditional execution
+command1 && command2   # Run command2 only if command1 succeeds
+command1 || command2   # Run command2 only if command1 fails
 ```
 
-### Loops
+### Useful Shortcuts
+- `Ctrl+C` - Cancel current command
+- `Ctrl+D` - Exit shell / End of input
+- `Ctrl+L` - Clear screen
+- `Ctrl+A` - Move cursor to beginning of line
+- `Ctrl+E` - Move cursor to end of line
+- `Ctrl+U` - Clear line before cursor
+- `Ctrl+K` - Clear line after cursor
+- `Ctrl+R` - Search command history
+- `Tab` - Auto-complete commands and filenames
 
+---
+
+## Git Commands
+
+### Initial Setup
 ```bash
-# For loop
-for i in 1 2 3 4 5; do
-    echo $i
-done
-
-# While loop
-while [ condition ]; do
-    echo "Running"
-done
-
-# Loop through files
-for file in *.txt; do
-    echo $file
-done
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+git config --list                           # View all settings
 ```
 
-### Functions
-
+### Repository Basics
 ```bash
-# Define function
-my_function() {
-    echo "Hello from function"
-}
+git init                                    # Initialize new repository
+git clone <url>                             # Clone remote repository
+git status                                  # Check repository status
+git log                                     # View commit history
+git log --oneline                           # View condensed commit history
+git log --graph --oneline --all             # View branch graph
+```
 
-# Call function
-my_function
+### Making Changes
+```bash
+git add <file>                              # Stage specific file
+git add .                                   # Stage all changes
+git add -A                                  # Stage all changes (including deletions)
+git commit -m "message"                     # Commit staged changes
+git commit -am "message"                    # Stage and commit tracked files
+```
 
-# Function with parameters
-greet() {
-    echo "Hello, $1"
-}
+### Branches
+```bash
+git branch                                  # List local branches
+git branch <branch-name>                    # Create new branch
+git checkout <branch-name>                  # Switch to branch
+git checkout -b <branch-name>               # Create and switch to new branch
+git switch <branch-name>                    # Switch to branch (newer syntax)
+git switch -c <branch-name>                 # Create and switch to new branch
+git merge <branch-name>                     # Merge branch into current branch
+git branch -d <branch-name>                 # Delete branch (safe)
+git branch -D <branch-name>                 # Force delete branch
+```
 
-greet "John"
+### Remote Repositories
+```bash
+git remote -v                               # List remote repositories
+git remote add origin <url>                 # Add remote repository
+git push origin <branch-name>               # Push to remote branch
+git push -u origin <branch-name>            # Push and set upstream
+git pull                                    # Fetch and merge from remote
+git pull origin <branch-name>               # Pull specific branch
+git fetch                                   # Download remote changes (no merge)
+```
+
+### Undoing Changes
+```bash
+git restore <file>                          # Discard changes in working directory
+git restore --staged <file>                 # Unstage file
+git reset HEAD~1                            # Undo last commit (keep changes)
+git reset --hard HEAD~1                     # Undo last commit (discard changes) ⚠️
+git revert <commit-hash>                    # Create new commit that undoes changes
+```
+
+### Other Useful Commands
+```bash
+git diff                                    # Show unstaged changes
+git diff --staged                           # Show staged changes
+git stash                                   # Temporarily save changes
+git stash pop                               # Restore stashed changes
+git stash list                              # List all stashes
+git rm <file>                               # Remove file and stage deletion
+git mv <old-name> <new-name>                # Rename/move file
 ```
 
 ---
 
-## Useful Command Combinations
+## Important Safety Notes
 
-```bash
-# Find and delete all .log files
-find . -name "*.log" -type f -delete
+### ⚠️ Dangerous Commands - Use With Caution
 
-# Count number of files in directory
-ls -1 | wc -l
+These commands can cause data loss or system issues. Always double-check before executing:
 
-# Find largest files
-du -ah . | sort -rh | head -n 10
+**File Deletion**
+- `rm -r <directory>` - Deletes directory and ALL contents without warning
+- `rm -rf <directory>` - Force deletes without any confirmation
+- **Never** run `rm -rf /` or `rm -rf /*` - This will delete everything on the system!
 
-# Monitor git status continuously
-watch -n 2 git status
+**Privilege Escalation**
+- `sudo su` - Logs in as root user with unlimited privileges
+- `sudo <command>` - Executes command with elevated privileges
+- Always verify commands before running with `sudo`
 
-# Create backup with timestamp
-cp file.txt file.txt.$(date +%Y%m%d_%H%M%S)
+**Package Management**
+- `sudo apt upgrade -y` - Upgrades all packages without confirmation - can break applications
+- `sudo apt autoremove` - May remove needed dependencies
+- Test upgrades in non-production environments first
 
-# Search and replace in multiple files
-find . -name "*.txt" -exec sed -i 's/old/new/g' {} +
+**Process Management**
+- `kill <PID>` - Terminates process immediately without cleanup
+- `kill -9 <PID>` - Brute force kill, doesn't allow process cleanup
+  - Can create zombie processes that consume resources
+  - Doesn't kill child processes, leaving orphaned processes
+  - Use as last resort only - try `kill <PID>` first
 
-# Git: View files changed in last commit
-git diff-tree --no-commit-id --name-only -r HEAD
+**Git Commands**
+- `git reset --hard` - Permanently discards uncommitted changes
+- `git push --force` - Overwrites remote history - can cause data loss for collaborators
+- `git clean -fd` - Permanently deletes untracked files and directories
 
-# Git: Undo all uncommitted changes
-git reset --hard && git clean -fd
+### Best Practices
 
-# Check which process is using a port
-lsof -i :8080
-netstat -tuln | grep 8080
-```
+1. **Always use `-i` flag for destructive operations** when available:
+   - `rm -i <file>` - Prompts before deletion
+   - `mv -i <source> <dest>` - Prompts before overwrite
+   - `cp -i <source> <dest>` - Prompts before overwrite
 
----
+2. **Test commands in safe environments** before production use
 
-## Keyboard Shortcuts (Bash Terminal)
+3. **Use version control** for important files
 
-```
-Ctrl + C        Cancel current command
-Ctrl + D        Exit terminal / End of file
-Ctrl + L        Clear screen (same as 'clear')
-Ctrl + A        Move to beginning of line
-Ctrl + E        Move to end of line
-Ctrl + U        Delete from cursor to beginning
-Ctrl + K        Delete from cursor to end
-Ctrl + W        Delete word before cursor
-Ctrl + R        Search command history
-Ctrl + Z        Suspend current process
-Tab             Auto-complete
-!!              Repeat last command
-```
+4. **Make backups** before major system changes
 
----
+5. **Read command output** before confirming with `-y` flag
 
-## Tips & Best Practices
-
-1. **Use Tab completion**: Save time by using Tab to auto-complete commands and paths
-2. **Check before force**: Always review before using `-f` or `--force` flags
-3. **Backup important data**: Before running destructive commands
-4. **Use aliases**: Create shortcuts for frequently used commands in `.bashrc`
-5. **Read man pages**: Use `man command` to learn more about any command
-6. **Test in dry-run**: Many commands have `-n` or `--dry-run` options
-7. **Use version control**: Always commit your work regularly
-8. **Write clear commit messages**: Future you will thank present you
-
----
-
-## Quick Reference Card
-
-| Task | Command |
-|------|---------|
-| Clone repo | `git clone <url>` |
-| Check status | `git status` |
-| Stage files | `git add .` |
-| Commit | `git commit -m "message"` |
-| Push | `git push` |
-| Pull | `git pull` |
-| Create branch | `git checkout -b <name>` |
-| Switch branch | `git checkout <name>` |
-| View history | `git log --oneline` |
-| Undo changes | `git restore <file>` |
-| List files | `ls -la` |
-| View file | `cat <file>` |
-| Search text | `grep "text" <file>` |
-| Find files | `find . -name "*.txt"` |
-| Check processes | `ps aux` |
-| SSH connect | `ssh user@host` |
-
----
-
-For more detailed information on any command, use:
-```bash
-man <command>          # Manual page
-<command> --help       # Quick help
-```
+6. **Avoid running commands** you don't fully understand, especially with `sudo`
