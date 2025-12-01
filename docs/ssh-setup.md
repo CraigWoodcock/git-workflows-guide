@@ -14,7 +14,7 @@ SSH is a more secure way of connecting to our resources and we use a GitBash ter
    - `cd ~/.ssh`
 
 2. Run the following command to generate a new key pair. 
- - `ssh-keygen -t rsa -b 4096 -C "craig.woodcock89@hotmail.co.uk"`
+ - `ssh-keygen -t rsa -b 4096 -C "email@youremail.com"`
    - `-t rsa` = type rsa
    - `-b 4096` = bytes 4096
    - `-C "Email address` = Email to use
