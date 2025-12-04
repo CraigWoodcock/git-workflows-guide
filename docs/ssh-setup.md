@@ -26,7 +26,7 @@ SSH is a more secure way of connecting to our resources and we use a GitBash ter
    - `craig-github-ssh-key` 
 
 4. Press Enter through the prompts and you should end up with this:<br>
-![RSA KEY](<../SSH Screenshots/Screenshot 2024-01-08 145102.png>)
+![RSA KEY](<../images/rsa_fingerprint.png>)
    
 5. Confirm the files have been created.
    - `ls` will show a list of files in the directory
