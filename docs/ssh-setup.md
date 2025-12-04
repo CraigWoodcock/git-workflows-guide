@@ -4,6 +4,8 @@ SSH or Secure Shell is a way of connecting or logging in to our resources i.e. G
 
 SSH is a more secure way of connecting to our resources and we use a GitBash terminal to connect to our GitHub Repo's and to push/pull changes to/from our local machines/remote hosts.
 
+![SSH Key Pairs](<../images/ssh_key_pairs.jpeg>)
+
 
 1. Generate SSH key via CLI using `ssh-keygen`
 2. Register Publick key on github
