@@ -8,18 +8,18 @@ SSH is a more secure way of connecting to our resources and we use a GitBash ter
 
 
 1. Generate SSH key via CLI using `ssh-keygen`
-2. Register Publick key on github
+2. Register Public key on github
 3. Add Private key to SSH register on local machine
 
 ## Generating SSH Keys
-1. Open a GitBash Terminal navigate to the .ssh directoy
+1. Open a GitBash Terminal navigate to the .ssh directory
    - `cd ~/.ssh`
 
 2. Run the following command to generate a new key pair. 
- - `ssh-keygen -t rsa -b 4096 -C "email@youremail.com"`
-   - `-t rsa` = type rsa
-   - `-b 4096` = bytes 4096
-   - `-C "Email address` = Email to use
+   - `ssh-keygen -t rsa -b 4096 -C "email@youremail.com"`
+     - `-t rsa` = type rsa
+     - `-b 4096` = bytes 4096
+     - `-C "Email address"` = Email to use
 
 3. Enter a name for your Key files.
    - This should be named after it's use case e.g.
@@ -55,10 +55,10 @@ SSH is a more secure way of connecting to our resources and we use a GitBash ter
    - `ssh-add craig-github-ssh-key`
 
 10. Test Connection:
-   - `cd ..` to move out .ssh folder
-   - `ssh -T git@github.com`
+    - `cd ..` to move out .ssh folder
+    - `ssh -T git@github.com`
 
-11. Now we can create a test folder in the directory where our github files go and then create a file to push to github..
+11. Now we can create a test folder in the directory where our github files go and then create a file to push to github.
     - `mkdir test-ssh-repo`
 
 12. cd into the repo and make a new file with a new line of text
@@ -70,22 +70,59 @@ SSH is a more secure way of connecting to our resources and we use a GitBash ter
     - `git commit testFile.txt -m "message"`
     - `git push origin main`
 
-14. when launching a new bash terminal, we need to re-add the key and start the agent:
-   - Start the SSH Agent.
-    - ``eval `ssh-agent -s``
+14. To make SSH keys persist across terminal sessions and reboots, we need to configure the SSH Agent service and create a config file.
 
-   - Add Key to SSH Register:
-    - `ssh-add craig-github-ssh-key`
-  
-15. To Make the Key persist, add it to the .bashrc file:<br>
-    - The following lines will start the agent and add the key each time the terminal is launched without printing confirmation to the terminal.
-```
- # Start SSH agent in silent mode
-eval "$(ssh-agent -s)" > /dev/null 2>&1
+15. **Configure SSH Agent Service (PowerShell)**:
+    - Open PowerShell as Administrator
+    - Set the SSH Agent service to start automatically:
+      ```powershell
+      Get-Service -Name ssh-agent | Set-Service -StartupType Automatic
+      ```
+    - Start the SSH Agent service:
+      ```powershell
+      Start-Service ssh-agent
+      ```
+    - Verify the service is running:
+      ```powershell
+      Get-Service -Name ssh-agent
+      ```
 
-# Add SSH key silently
-ssh-add ~/.ssh/craig-github-ssh-key > /dev/null 2>&1
+16. **Create SSH Config File**:
+    - Navigate to your .ssh directory:
+      ```bash
+      cd ~/.ssh
+      ```
+    - Create or edit the config file:
+      ```bash
+      notepad config
+      ```
+    - Add the following configuration:
+      ```
+      # GitHub Configuration
+      Host github.com
+          HostName github.com
+          User git
+          IdentityFile ~/.ssh/craig-github-ssh-key
+          IdentitiesOnly yes
+          AddKeysToAgent yes
+      ```
+    - Save and close the file
+    - Set proper permissions on the config file (in GitBash):
+      ```bash
+      chmod 600 config
+      ```
 
-```
+17. **Add Key to SSH Agent** (one-time):
+    - ```bash
+      ssh-add ~/.ssh/craig-github-ssh-key
+      ```
+    - Verify the key was added:
+      ```bash
+      ssh-add -l
+      ```
 
- 
+18. **Test the Configuration**:
+    - ```bash
+      ssh -T git@github.com
+      ```
+    - Your keys will now automatically load on startup and persist across reboots
