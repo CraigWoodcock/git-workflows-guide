@@ -214,6 +214,4 @@ ssh -T git@github.com
 ssh-keygen -t ed25519 -C "email@youremail.com"
 ```
 
-**Notes:** If your image paths include spaces (e.g. `SSH Screenshots`) GitHub will not render them as links. I updated the image links in this file to use `../SSH-Screenshots/...` and hyphenated filenames â€” please ensure your repo folder names and filenames match exactly.
-
 ---
