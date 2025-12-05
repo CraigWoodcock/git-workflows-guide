@@ -6,23 +6,24 @@ Once configured, you can push and pull code from GitHub using your SSH keys inst
 ---
 
 # Table of Contents
-1. [What Are SSH Keys?](#what-are-ssh-keys)  
-2. [Prerequisites](#prerequisites)  
-3. [Generate SSH Keys](#generate-ssh-keys)  
-4. [Locate and Verify Keys](#locate-and-verify-keys)  
-5. [Register Public Key on GitHub](#register-public-key-on-github)  
-6. [Start the SSH Agent](#start-the-ssh-agent)  
-7. [Add Private Key to SSH Agent](#add-private-key-to-ssh-agent)  
-8. [Test the SSH Connection](#test-the-ssh-connection)  
-9. [Create a Test Git Repository](#create-a-test-git-repository)  
-10. [Make SSH Keys Persist After Reboot](#make-ssh-keys-persist-after-reboot)  
-11. [Create SSH Config File](#create-ssh-config-file)  
-12. [Final Connection Test](#final-connection-test)  
-13. [Optional Improvements](#optional-improvements)
+
+- [What Are SSH Keys?](#what-are-ssh-keys)
+- [Prerequisites](#prerequisites)
+- [Generate SSH Keys](#generate-ssh-keys)
+- [Locate and Verify Keys](#locate-and-verify-keys)
+- [Register Public Key on GitHub](#register-public-key-on-github)
+- [Start the SSH Agent](#start-the-ssh-agent)
+- [Add Private Key to SSH Agent](#add-private-key-to-ssh-agent)
+- [Test the SSH Connection](#test-the-ssh-connection)
+- [Create a Test Git Repository](#create-a-test-git-repository)
+- [Make SSH Keys Persist After Reboot](#make-ssh-keys-persist-after-reboot)
+- [Create SSH Config File](#create-ssh-config-file)
+- [Final Connection Test](#final-connection-test)
+- [Optional Improvements](#optional-improvements)
 
 ---
 
-# 1. What Are SSH Keys?
+## What Are SSH Keys?
 
 SSH keys are a pair of cryptographic files:
 
@@ -35,7 +36,7 @@ Your system proves identity using the **private key**, while GitHub verifies it 
 
 ---
 
-# 2. Prerequisites
+## Prerequisites
 
 - Git installed  
 - Git Bash terminal  
@@ -43,7 +44,7 @@ Your system proves identity using the **private key**, while GitHub verifies it 
 
 ---
 
-# 3. Generate SSH Keys
+## Generate SSH Keys
 
 1. Open Git Bash and move into your SSH directory:
 
@@ -69,11 +70,16 @@ craig-github-ssh-key
 
 ---
 
-# 4. Locate and Verify Keys
+## Locate and Verify Keys
 
 ```bash
 ls
 ```
+
+List should include:
+
+- `craig-github-ssh-key` (private)
+- `craig-github-ssh-key.pub` (public)
 
 Show the public key:
 
@@ -81,21 +87,23 @@ Show the public key:
 cat craig-github-ssh-key.pub
 ```
 
-![Public key](../SSH Screenshots/Screenshot 2024-01-08 150705.png)
+![Public key](../SSH-Screenshots/Screenshot-2024-01-08-150705.png)
 
 ---
 
-# 5. Register Public Key on GitHub
+## Register Public Key on GitHub
 
 Navigate to:
 
-**Profile â†’ Settings â†’ SSH and GPG Keys â†’ New SSH Key**
+**Profile â†’ Settings â†’ SSH and GPG keys â†’ New SSH key**
 
-![SSH Github](../SSH Screenshots/Screenshot 2024-01-08 151034.png)
+Add the public key and give it a descriptive title (match your file name if you like).
+
+![SSH Github](../SSH-Screenshots/Screenshot-2024-01-08-151034.png)
 
 ---
 
-# 6. Start the SSH Agent
+## Start the SSH Agent
 
 ```bash
 eval $(ssh-agent -s)
@@ -103,7 +111,7 @@ eval $(ssh-agent -s)
 
 ---
 
-# 7. Add Private Key to SSH Agent
+## Add Private Key to SSH Agent
 
 ```bash
 ssh-add craig-github-ssh-key
@@ -111,16 +119,22 @@ ssh-add craig-github-ssh-key
 
 ---
 
-# 8. Test the SSH Connection
+## Test the SSH Connection
 
 ```bash
 cd ..
 ssh -T git@github.com
 ```
 
+You should see a success message such as:
+
+```
+Hi USERNAME! You've successfully authenticated...
+```
+
 ---
 
-# 9. Create a Test Git Repository
+## Create a Test Git Repository
 
 ```bash
 mkdir test-ssh-repo
@@ -128,15 +142,10 @@ cd test-ssh-repo
 echo "this is a test line" > testFile.txt
 ```
 
-Add remote:
+Add remote (SSH URL):
 
 ```bash
 git remote add origin git@github.com:USERNAME/REPO.git
-```
-
-Commit & push:
-
-```bash
 git add .
 git commit -m "Add test file"
 git push origin main
@@ -144,9 +153,9 @@ git push origin main
 
 ---
 
-# 10. Make SSH Keys Persist After Reboot
+## Make SSH Keys Persist After Reboot
 
-PowerShell (Admin):
+**Windows (PowerShell as Administrator):**
 
 ```powershell
 Get-Service ssh-agent | Set-Service -StartupType Automatic
@@ -156,12 +165,14 @@ Get-Service ssh-agent
 
 ---
 
-# 11. Create SSH Config File
+## Create SSH Config File
 
 ```bash
 cd ~/.ssh
 notepad config
 ```
+
+Add:
 
 ```
 Host github.com
@@ -172,15 +183,22 @@ Host github.com
     AddKeysToAgent yes
 ```
 
-Permissions:
+Set permissions (Git Bash):
 
 ```bash
 chmod 600 config
 ```
 
+Add key to agent (one-time):
+
+```bash
+ssh-add ~/.ssh/craig-github-ssh-key
+ssh-add -l
+```
+
 ---
 
-# 12. Final Connection Test
+## Final Connection Test
 
 ```bash
 ssh -T git@github.com
@@ -188,12 +206,14 @@ ssh -T git@github.com
 
 ---
 
-# 13. Optional Improvements
+## Optional Improvements
 
-### Ed25519 (recommended)
+**Use Ed25519 (recommended):**
 
 ```bash
 ssh-keygen -t ed25519 -C "email@youremail.com"
 ```
+
+**Notes:** If your image paths include spaces (e.g. `SSH Screenshots`) GitHub will not render them as links. I updated the image links in this file to use `../SSH-Screenshots/...` and hyphenated filenames â€” please ensure your repo folder names and filenames match exactly.
 
 ---
