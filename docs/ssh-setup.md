@@ -1,128 +1,199 @@
-# SSH to Github
+# SSH to GitHub
 
-SSH or Secure Shell is a way of connecting or logging in to our resources i.e. Github.com.
+SSH (Secure Shell) is a secure method for authenticating with remote systems such as GitHub.  
+Once configured, you can push and pull code from GitHub using your SSH keys instead of passwords.
 
-SSH is a more secure way of connecting to our resources and we use a GitBash terminal to connect to our GitHub Repo's and to push/pull changes to/from our local machines/remote hosts.
+---
 
-![SSH Key Pairs](<../images/ssh_key_pairs.jpeg>)
+# Table of Contents
+1. [What Are SSH Keys?](#what-are-ssh-keys)  
+2. [Prerequisites](#prerequisites)  
+3. [Generate SSH Keys](#generate-ssh-keys)  
+4. [Locate and Verify Keys](#locate-and-verify-keys)  
+5. [Register Public Key on GitHub](#register-public-key-on-github)  
+6. [Start the SSH Agent](#start-the-ssh-agent)  
+7. [Add Private Key to SSH Agent](#add-private-key-to-ssh-agent)  
+8. [Test the SSH Connection](#test-the-ssh-connection)  
+9. [Create a Test Git Repository](#create-a-test-git-repository)  
+10. [Make SSH Keys Persist After Reboot](#make-ssh-keys-persist-after-reboot)  
+11. [Create SSH Config File](#create-ssh-config-file)  
+12. [Final Connection Test](#final-connection-test)  
+13. [Optional Improvements](#optional-improvements)
 
+---
 
-1. Generate SSH key via CLI using `ssh-keygen`
-2. Register Public key on github
-3. Add Private key to SSH register on local machine
+# 1. What Are SSH Keys?
 
-## Generating SSH Keys
-1. Open a GitBash Terminal navigate to the .ssh directory
-   - `cd ~/.ssh`
+SSH keys are a pair of cryptographic files:
 
-2. Run the following command to generate a new key pair. 
-   - `ssh-keygen -t rsa -b 4096 -C "email@youremail.com"`
-     - `-t rsa` = type rsa
-     - `-b 4096` = bytes 4096
-     - `-C "Email address"` = Email to use
+- **Private key** (kept on your machine)
+- **Public key** (uploaded to GitHub)
 
-3. Enter a name for your Key files.
-   - This should be named after it's use case e.g.
-   - `craig-github-ssh-key` 
+Your system proves identity using the **private key**, while GitHub verifies it using the **public key**.
 
-4. Press Enter through the prompts and you should end up with this:<br>
-![RSA KEY](<../images/rsa_fingerprint.png>)
-   
-5. Confirm the files have been created.
-   - `ls` will show a list of files in the directory
-   - we should see 2 files.
-   - `.pub` extension is the public key!!!
+![SSH Key Pairs](../images/ssh_key_pairs.jpeg)
 
-6. We need to print the content of the public key to the screen.
-   - `cat craig-github-ssh-key.pub`
-   - And then copy the public key:<br>
-![Public key](<../SSH Screenshots/Screenshot 2024-01-08 150705.png>)
+---
 
-7. Now we need to Register on Github.
-   - Head to github,
-   - click on your profile picture,
-   - Go to Settings,
-   - 'SSH and GPG KEYS'
-   - 'ADD NEW KEY'.
-   - Name your key the same as the key file.
-   - And paste the key from the following step.<br>
- ![SSH Github](<../SSH Screenshots/Screenshot 2024-01-08 151034.png>)
+# 2. Prerequisites
 
-8. Start the SSH Agent.
-   - `eval $(ssh-agent -s)`
+- Git installed  
+- Git Bash terminal  
+- GitHub account  
 
-9. Add Key to SSH Register:
-   - `ssh-add craig-github-ssh-key`
+---
 
-10. Test Connection:
-    - `cd ..` to move out .ssh folder
-    - `ssh -T git@github.com`
+# 3. Generate SSH Keys
 
-11. Now we can create a test folder in the directory where our github files go and then create a file to push to github.
-    - `mkdir test-ssh-repo`
+1. Open Git Bash and move into your SSH directory:
 
-12. cd into the repo and make a new file with a new line of text
-    - `echo this is a test line > testFile.txt`
-  
-13. now add, commit and push,
-    - `git remote add origin <url to repo>`
-    - `git add .`
-    - `git commit testFile.txt -m "message"`
-    - `git push origin main`
+```bash
+cd ~/.ssh
+```
 
-14. To make SSH keys persist across terminal sessions and reboots, we need to configure the SSH Agent service and create a config file.
+2. Generate a new key pair (RSA example):
 
-15. **Configure SSH Agent Service (PowerShell)**:
-    - Open PowerShell as Administrator
-    - Set the SSH Agent service to start automatically:
-      ```powershell
-      Get-Service -Name ssh-agent | Set-Service -StartupType Automatic
-      ```
-    - Start the SSH Agent service:
-      ```powershell
-      Start-Service ssh-agent
-      ```
-    - Verify the service is running:
-      ```powershell
-      Get-Service -Name ssh-agent
-      ```
+```bash
+ssh-keygen -t rsa -b 4096 -C "email@youremail.com"
+```
 
-16. **Create SSH Config File**:
-    - Navigate to your .ssh directory:
-      ```bash
-      cd ~/.ssh
-      ```
-    - Create or edit the config file:
-      ```bash
-      notepad config
-      ```
-    - Add the following configuration:
-      ```
-      # GitHub Configuration
-      Host github.com
-          HostName github.com
-          User git
-          IdentityFile ~/.ssh/craig-github-ssh-key
-          IdentitiesOnly yes
-          AddKeysToAgent yes
-      ```
-    - Save and close the file
-    - Set proper permissions on the config file (in GitBash):
-      ```bash
-      chmod 600 config
-      ```
+3. Name your key files, e.g.:
 
-17. **Add Key to SSH Agent** (one-time):
-    - ```bash
-      ssh-add ~/.ssh/craig-github-ssh-key
-      ```
-    - Verify the key was added:
-      ```bash
-      ssh-add -l
-      ```
+```
+craig-github-ssh-key
+```
 
-18. **Test the Configuration**:
-    - ```bash
-      ssh -T git@github.com
-      ```
-    - Your keys will now automatically load on startup and persist across reboots
+4. Press Enter through the prompts.
+
+![RSA KEY](../images/rsa_fingerprint.png)
+
+---
+
+# 4. Locate and Verify Keys
+
+```bash
+ls
+```
+
+Show the public key:
+
+```bash
+cat craig-github-ssh-key.pub
+```
+
+![Public key](../SSH Screenshots/Screenshot 2024-01-08 150705.png)
+
+---
+
+# 5. Register Public Key on GitHub
+
+Navigate to:
+
+**Profile â†’ Settings â†’ SSH and GPG Keys â†’ New SSH Key**
+
+![SSH Github](../SSH Screenshots/Screenshot 2024-01-08 151034.png)
+
+---
+
+# 6. Start the SSH Agent
+
+```bash
+eval $(ssh-agent -s)
+```
+
+---
+
+# 7. Add Private Key to SSH Agent
+
+```bash
+ssh-add craig-github-ssh-key
+```
+
+---
+
+# 8. Test the SSH Connection
+
+```bash
+cd ..
+ssh -T git@github.com
+```
+
+---
+
+# 9. Create a Test Git Repository
+
+```bash
+mkdir test-ssh-repo
+cd test-ssh-repo
+echo "this is a test line" > testFile.txt
+```
+
+Add remote:
+
+```bash
+git remote add origin git@github.com:USERNAME/REPO.git
+```
+
+Commit & push:
+
+```bash
+git add .
+git commit -m "Add test file"
+git push origin main
+```
+
+---
+
+# 10. Make SSH Keys Persist After Reboot
+
+PowerShell (Admin):
+
+```powershell
+Get-Service ssh-agent | Set-Service -StartupType Automatic
+Start-Service ssh-agent
+Get-Service ssh-agent
+```
+
+---
+
+# 11. Create SSH Config File
+
+```bash
+cd ~/.ssh
+notepad config
+```
+
+```
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/craig-github-ssh-key
+    IdentitiesOnly yes
+    AddKeysToAgent yes
+```
+
+Permissions:
+
+```bash
+chmod 600 config
+```
+
+---
+
+# 12. Final Connection Test
+
+```bash
+ssh -T git@github.com
+```
+
+---
+
+# 13. Optional Improvements
+
+### Ed25519 (recommended)
+
+```bash
+ssh-keygen -t ed25519 -C "email@youremail.com"
+```
+
+---
